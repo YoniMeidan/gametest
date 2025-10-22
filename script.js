@@ -4,6 +4,8 @@ let waitTime = 10000; // Initial wait time: 10 seconds
 let displayTime = 1000; // Initial display time: 1 second
 let currentNumber = '';
 let isGameActive = false;
+let animationSpeed = 3000; // Base animation speed in ms
+let animalIntervals = []; // Store intervals for random movements
 
 // DOM elements
 const circle = document.getElementById('circle');
@@ -20,14 +22,28 @@ const tryAgainBtn = document.getElementById('try-again-btn');
 const correctNumberDisplay = document.getElementById('correct-number');
 const clapSound = document.getElementById('clap-sound');
 const monkeyContainer = document.getElementById('monkey-container');
+const tooltipWait = document.getElementById('tooltip-wait');
+const tooltipDisplay = document.getElementById('tooltip-display');
+const tooltipDigits = document.getElementById('tooltip-digits');
+const tooltipAnimals = document.getElementById('tooltip-animals');
 
 // Initialize game
 function initGame() {
     currentLevel = 1;
     waitTime = 10000;
     displayTime = 1000;
-    levelDisplay.textContent = currentLevel;
+    animationSpeed = 3000;
+    updateLevelDisplay();
     startLevel();
+}
+
+// Update level display and tooltip
+function updateLevelDisplay() {
+    levelDisplay.childNodes[0].textContent = currentLevel;
+    tooltipWait.textContent = (waitTime / 1000).toFixed(1) + 's';
+    tooltipDisplay.textContent = (displayTime / 1000).toFixed(2) + 's';
+    tooltipDigits.textContent = getDigitsForLevel(currentLevel);
+    tooltipAnimals.textContent = getAnimalCount(currentLevel);
 }
 
 // Start a new level
@@ -42,11 +58,11 @@ function startLevel() {
     // Show status message
     statusMessage.textContent = `Get ready... Number will appear in ${(waitTime / 1000).toFixed(1)} seconds`;
 
-    // Add monkey animations from level 3 onwards
+    // Add animal animations from level 3 onwards
     if (currentLevel >= 3) {
-        addMonkeyAnimations();
+        addAnimalAnimations();
     } else {
-        removeMonkeyAnimations();
+        removeAnimalAnimations();
     }
 
     // Wait before showing the number
@@ -59,6 +75,13 @@ function startLevel() {
 function getDigitsForLevel(level) {
     // Start with 4 digits, add 1 digit every 5 levels
     return 4 + Math.floor((level - 1) / 5);
+}
+
+// Calculate number of animals based on level
+function getAnimalCount(level) {
+    // No animals before level 3, then add 3 animals every 3 levels
+    if (level < 3) return 0;
+    return 3 * (Math.floor((level - 3) / 3) + 1);
 }
 
 // Generate random number with specified digits
@@ -196,7 +219,6 @@ function showFailureModal() {
 // Advance to next level
 function nextLevel() {
     currentLevel++;
-    levelDisplay.textContent = currentLevel;
 
     // Increase wait time by 10%
     waitTime *= 1.1;
@@ -204,6 +226,10 @@ function nextLevel() {
     // Decrease display time by 10%, but not less than 100ms
     displayTime = Math.max(100, displayTime * 0.9);
 
+    // Decrease animation speed by 5% (faster)
+    animationSpeed = Math.max(500, animationSpeed * 0.95);
+
+    updateLevelDisplay();
     startLevel();
 }
 
@@ -212,27 +238,62 @@ function retryLevel() {
     startLevel();
 }
 
-// Add monkey animations
-function addMonkeyAnimations() {
-    // Clear existing monkeys
-    monkeyContainer.innerHTML = '';
+// Add animal animations
+function addAnimalAnimations() {
+    // Clear existing animals and intervals
+    removeAnimalAnimations();
 
-    // Create three monkeys with different animations
-    const monkeyEmojis = ['🐵', '🙈', '🙉'];
-    const animationClasses = ['monkey-run', 'monkey-jump', 'monkey-face'];
+    const animalCount = getAnimalCount(currentLevel);
+    const animalEmojis = ['🐵', '🙈', '🙉', '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐔', '🦆', '🦉'];
 
-    for (let i = 0; i < 3; i++) {
-        const monkey = document.createElement('div');
-        monkey.className = `monkey ${animationClasses[i]}`;
-        monkey.textContent = monkeyEmojis[i];
-        monkey.style.animationDelay = `${i * 0.5}s`;
-        monkeyContainer.appendChild(monkey);
+    for (let i = 0; i < animalCount; i++) {
+        const animal = document.createElement('div');
+        animal.className = 'animal';
+        animal.textContent = animalEmojis[i % animalEmojis.length];
+
+        // Random starting position
+        animal.style.left = Math.random() * 80 + 10 + '%';
+        animal.style.top = Math.random() * 80 + 10 + '%';
+
+        monkeyContainer.appendChild(animal);
+
+        // Start random movement for this animal
+        startRandomMovement(animal);
     }
 }
 
-// Remove monkey animations
-function removeMonkeyAnimations() {
+// Remove animal animations
+function removeAnimalAnimations() {
+    // Clear all intervals
+    animalIntervals.forEach(interval => clearInterval(interval));
+    animalIntervals = [];
+
+    // Clear all animals
     monkeyContainer.innerHTML = '';
+}
+
+// Start random movement for an animal
+function startRandomMovement(animal) {
+    // Update position at regular intervals based on current animation speed
+    const interval = setInterval(() => {
+        // Random target position
+        const targetLeft = Math.random() * 80 + 10;
+        const targetTop = Math.random() * 80 + 10;
+
+        // Random rotation
+        const rotation = Math.random() * 720 - 360;
+
+        // Random scale
+        const scale = 0.8 + Math.random() * 0.7;
+
+        // Apply smooth transition
+        animal.style.transition = `all ${animationSpeed}ms linear`;
+        animal.style.left = targetLeft + '%';
+        animal.style.top = targetTop + '%';
+        animal.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+    }, animationSpeed);
+
+    animalIntervals.push(interval);
 }
 
 // Event listeners

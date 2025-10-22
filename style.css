@@ -6,7 +6,13 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="grad1" x1="0%25" y1="0%25" x2="100%25" y2="100%25"><stop offset="0%25" style="stop-color:%23E0F7FA;stop-opacity:1" /><stop offset="100%25" style="stop-color:%23B2EBF2;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="600" fill="url(%23grad1)"/><circle cx="200" cy="150" r="80" fill="%23B2DFDB" opacity="0.3"/><circle cx="800" cy="400" r="120" fill="%23C8E6C9" opacity="0.3"/><circle cx="1000" cy="200" r="60" fill="%23F0F4C3" opacity="0.3"/><circle cx="400" cy="450" r="90" fill="%23E1BEE7" opacity="0.3"/><path d="M0,300 Q300,200 600,300 T1200,300" stroke="%23B2DFDB" stroke-width="3" fill="none" opacity="0.5"/><path d="M0,400 Q300,350 600,400 T1200,400" stroke="%23C8E6C9" stroke-width="2" fill="none" opacity="0.4"/></svg>');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,12 +29,68 @@ body {
 
 .level-info {
     margin-bottom: 40px;
+    position: relative;
 }
 
 .level-info h2 {
     font-size: 2em;
     color: #333;
     margin-bottom: 10px;
+}
+
+#level-display {
+    cursor: help;
+    position: relative;
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+#level-display:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    transform: scale(1.05);
+}
+
+.level-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 0.5em;
+    font-weight: normal;
+    white-space: nowrap;
+    z-index: 100;
+    transition: opacity 0.3s, visibility 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.level-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.9);
+}
+
+#level-display:hover .level-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.level-tooltip div {
+    margin: 5px 0;
+    text-align: left;
 }
 
 #status-message {
@@ -68,7 +130,7 @@ body {
     opacity: 1;
 }
 
-/* Monkey animations */
+/* Animal animations */
 .monkey-container {
     position: absolute;
     top: 0;
@@ -78,88 +140,12 @@ body {
     pointer-events: none;
 }
 
-.monkey {
+.animal {
     position: absolute;
     font-size: 3em;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: linear;
     animation-iteration-count: infinite;
-}
-
-.monkey-run {
-    animation-name: runAround;
-}
-
-.monkey-jump {
-    animation-name: jumpAround;
-}
-
-.monkey-face {
-    animation-name: makeFaces;
-}
-
-@keyframes runAround {
-    0% {
-        left: 0%;
-        top: 50%;
-    }
-    25% {
-        left: 50%;
-        top: 0%;
-    }
-    50% {
-        left: 100%;
-        top: 50%;
-    }
-    75% {
-        left: 50%;
-        top: 100%;
-    }
-    100% {
-        left: 0%;
-        top: 50%;
-    }
-}
-
-@keyframes jumpAround {
-    0%, 100% {
-        left: 20%;
-        top: 20%;
-        transform: scale(1);
-    }
-    25% {
-        left: 80%;
-        top: 20%;
-        transform: scale(1.5);
-    }
-    50% {
-        left: 80%;
-        top: 80%;
-        transform: scale(1);
-    }
-    75% {
-        left: 20%;
-        top: 80%;
-        transform: scale(1.5);
-    }
-}
-
-@keyframes makeFaces {
-    0%, 100% {
-        left: 50%;
-        top: 10%;
-        transform: rotate(0deg);
-    }
-    33% {
-        left: 90%;
-        top: 50%;
-        transform: rotate(120deg);
-    }
-    66% {
-        left: 10%;
-        top: 50%;
-        transform: rotate(-120deg);
-    }
+    transition: all 0.1s linear;
 }
 
 /* Modal styles */
