@@ -1,0 +1,289 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.game-container {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.level-info {
+    margin-bottom: 40px;
+}
+
+.level-info h2 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#status-message {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.circle-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
+
+.circle {
+    width: 300px;
+    height: 300px;
+    background-color: black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+#number-display {
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#number-display.show {
+    opacity: 1;
+}
+
+/* Monkey animations */
+.monkey-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.monkey {
+    position: absolute;
+    font-size: 3em;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.monkey-run {
+    animation-name: runAround;
+}
+
+.monkey-jump {
+    animation-name: jumpAround;
+}
+
+.monkey-face {
+    animation-name: makeFaces;
+}
+
+@keyframes runAround {
+    0% {
+        left: 0%;
+        top: 50%;
+    }
+    25% {
+        left: 50%;
+        top: 0%;
+    }
+    50% {
+        left: 100%;
+        top: 50%;
+    }
+    75% {
+        left: 50%;
+        top: 100%;
+    }
+    100% {
+        left: 0%;
+        top: 50%;
+    }
+}
+
+@keyframes jumpAround {
+    0%, 100% {
+        left: 20%;
+        top: 20%;
+        transform: scale(1);
+    }
+    25% {
+        left: 80%;
+        top: 20%;
+        transform: scale(1.5);
+    }
+    50% {
+        left: 80%;
+        top: 80%;
+        transform: scale(1);
+    }
+    75% {
+        left: 20%;
+        top: 80%;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes makeFaces {
+    0%, 100% {
+        left: 50%;
+        top: 10%;
+        transform: rotate(0deg);
+    }
+    33% {
+        left: 90%;
+        top: 50%;
+        transform: rotate(120deg);
+    }
+    66% {
+        left: 10%;
+        top: 50%;
+        transform: rotate(-120deg);
+    }
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+#user-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5em;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#user-input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.btn {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn:hover {
+    background-color: #0b7dda;
+    transform: scale(1.05);
+}
+
+.btn-success {
+    background-color: #4CAF50;
+}
+
+.btn-success:hover {
+    background-color: #45a049;
+}
+
+.btn-retry {
+    background-color: #ff9800;
+}
+
+.btn-retry:hover {
+    background-color: #e68900;
+}
+
+/* Celebration styles */
+.celebration-image {
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: celebrate 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes celebrate {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.2);
+    }
+}
+
+.failure-image {
+    font-size: 5em;
+    margin-bottom: 20px;
+    color: #f44336;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+#correct-number {
+    font-weight: bold;
+    color: #f44336;
+    font-size: 1.5em;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concentration Memory Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="level-info">
+            <h2>Level: <span id="level-display">1</span></h2>
+            <p id="status-message">Get ready...</p>
+        </div>
+
+        <div class="circle-container">
+            <div id="circle" class="circle">
+                <span id="number-display"></span>
+            </div>
+            <!-- Monkey animations will be added here from level 3+ -->
+            <div id="monkey-container" class="monkey-container"></div>
+        </div>
+    </div>
+
+    <!-- Modal for user input -->
+    <div id="input-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>What was the number?</h2>
+            <input type="text" id="user-input" placeholder="Enter the number" autofocus>
+            <button id="submit-btn" class="btn">Submit</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content celebration">
+            <div class="celebration-image">🎉🎊✨</div>
+            <h2>Correct!</h2>
+            <p>Well done! You remembered the number!</p>
+            <button id="next-level-btn" class="btn btn-success">Continue to Next Level</button>
+        </div>
+    </div>
+
+    <!-- Failure Modal -->
+    <div id="failure-modal" class="modal hidden">
+        <div class="modal-content failure">
+            <div class="failure-image">❌</div>
+            <h2>Wrong Answer</h2>
+            <p>The correct number was: <span id="correct-number"></span></p>
+            <button id="try-again-btn" class="btn btn-retry">Try Again</button>
+        </div>
+    </div>
+
+    <audio id="clap-sound" preload="auto">
+        <source src="clap.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
