@@ -14,10 +14,142 @@ body {
     background-position: center;
     background-attachment: fixed;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Progress Bar */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    overflow-x: auto;
+    max-height: 60px;
+}
+
+.progress-title {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+    white-space: nowrap;
+}
+
+.progress-levels {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.level-indicator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.level-indicator:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: #45a049;
+}
+
+.level-indicator.current {
+    background-color: #2196F3;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.level-indicator.current:hover {
+    background-color: #0b7dda;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.level-number {
+    font-size: 1em;
+}
+
+.retry-count {
+    font-size: 0.7em;
+    opacity: 0.8;
+    margin-left: 2px;
+}
+
+.retry-count::before {
+    content: '(';
+}
+
+.retry-count::after {
+    content: ')';
+}
+
+/* Progress level tooltip */
+.progress-level-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    font-weight: normal;
+    white-space: nowrap;
+    z-index: 1000;
+    transition: opacity 0.3s, visibility 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.progress-level-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+}
+
+.level-indicator:hover .progress-level-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.progress-level-tooltip div {
+    margin: 3px 0;
+    text-align: left;
 }
 
 .game-container {
@@ -25,6 +157,7 @@ body {
     width: 100%;
     max-width: 800px;
     padding: 20px;
+    margin-top: 70px;
 }
 
 .level-info {

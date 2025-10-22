@@ -7,6 +7,10 @@ let isGameActive = false;
 let animationSpeed = 3000; // Base animation speed in ms
 let animalIntervals = []; // Store intervals for random movements
 
+// Progress tracking
+let levelHistory = {}; // Store level data: { levelNum: { retries, waitTime, displayTime, digits, animals } }
+let completedLevels = []; // Array of completed level numbers
+
 // DOM elements
 const circle = document.getElementById('circle');
 const numberDisplay = document.getElementById('number-display');
@@ -26,6 +30,7 @@ const tooltipWait = document.getElementById('tooltip-wait');
 const tooltipDisplay = document.getElementById('tooltip-display');
 const tooltipDigits = document.getElementById('tooltip-digits');
 const tooltipAnimals = document.getElementById('tooltip-animals');
+const progressLevels = document.getElementById('progress-levels');
 
 // Initialize game
 function initGame() {
@@ -33,8 +38,25 @@ function initGame() {
     waitTime = 10000;
     displayTime = 1000;
     animationSpeed = 3000;
+    levelHistory = {};
+    completedLevels = [];
     updateLevelDisplay();
+    initLevelHistory();
+    updateProgressBar();
     startLevel();
+}
+
+// Initialize level history for current level
+function initLevelHistory() {
+    if (!levelHistory[currentLevel]) {
+        levelHistory[currentLevel] = {
+            retries: 0,
+            waitTime: waitTime,
+            displayTime: displayTime,
+            digits: getDigitsForLevel(currentLevel),
+            animals: getAnimalCount(currentLevel)
+        };
+    }
 }
 
 // Update level display and tooltip
@@ -44,6 +66,80 @@ function updateLevelDisplay() {
     tooltipDisplay.textContent = (displayTime / 1000).toFixed(2) + 's';
     tooltipDigits.textContent = getDigitsForLevel(currentLevel);
     tooltipAnimals.textContent = getAnimalCount(currentLevel);
+}
+
+// Update progress bar with completed levels
+function updateProgressBar() {
+    progressLevels.innerHTML = '';
+
+    // Add all levels that have been attempted or completed
+    const allLevels = [...new Set([...completedLevels, currentLevel])].sort((a, b) => a - b);
+
+    allLevels.forEach(level => {
+        const levelData = levelHistory[level];
+        if (!levelData) return;
+
+        const levelIndicator = document.createElement('div');
+        levelIndicator.className = 'level-indicator';
+        if (level === currentLevel) {
+            levelIndicator.classList.add('current');
+        }
+
+        // Level number
+        const levelNumber = document.createElement('span');
+        levelNumber.className = 'level-number';
+        levelNumber.textContent = level;
+        levelIndicator.appendChild(levelNumber);
+
+        // Retry count (only show if > 0)
+        if (levelData.retries > 0) {
+            const retryCount = document.createElement('span');
+            retryCount.className = 'retry-count';
+            retryCount.textContent = levelData.retries;
+            levelIndicator.appendChild(retryCount);
+        }
+
+        // Tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'progress-level-tooltip';
+        tooltip.innerHTML = `
+            <div>Level: ${level}</div>
+            <div>Wait Time: ${(levelData.waitTime / 1000).toFixed(1)}s</div>
+            <div>Display Time: ${(levelData.displayTime / 1000).toFixed(2)}s</div>
+            <div>Digits: ${levelData.digits}</div>
+            <div>Animals: ${levelData.animals}</div>
+            <div>Retries: ${levelData.retries}</div>
+        `;
+        levelIndicator.appendChild(tooltip);
+
+        // Click handler to jump to level
+        levelIndicator.addEventListener('click', () => jumpToLevel(level));
+
+        progressLevels.appendChild(levelIndicator);
+    });
+}
+
+// Jump to a specific level
+function jumpToLevel(level) {
+    if (level === currentLevel) return; // Already on this level
+
+    // Calculate the game state for the target level
+    currentLevel = level;
+
+    // Recalculate wait time, display time, and animation speed
+    waitTime = 10000 * Math.pow(1.1, level - 1);
+    displayTime = Math.max(100, 1000 * Math.pow(0.9, level - 1));
+    animationSpeed = Math.max(500, 3000 * Math.pow(0.95, level - 1));
+
+    // Update level history if this level doesn't exist
+    initLevelHistory();
+
+    // Update displays
+    updateLevelDisplay();
+    updateProgressBar();
+
+    // Start the level
+    startLevel();
 }
 
 // Start a new level
@@ -140,10 +236,18 @@ function checkAnswer() {
         hideAllModals();
         playClapSound();
         showSuccessModal();
+
+        // Mark level as completed if not already
+        if (!completedLevels.includes(currentLevel)) {
+            completedLevels.push(currentLevel);
+        }
+        updateProgressBar();
     } else {
-        // Wrong answer
+        // Wrong answer - increment retry count
+        levelHistory[currentLevel].retries++;
         hideAllModals();
         showFailureModal();
+        updateProgressBar();
     }
 }
 
@@ -229,7 +333,11 @@ function nextLevel() {
     // Decrease animation speed by 5% (faster)
     animationSpeed = Math.max(500, animationSpeed * 0.95);
 
+    // Initialize level history for new level
+    initLevelHistory();
+
     updateLevelDisplay();
+    updateProgressBar();
     startLevel();
 }
 

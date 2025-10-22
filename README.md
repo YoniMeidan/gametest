@@ -14,13 +14,22 @@ A web-based memory game designed to test and improve your concentration and shor
 
 ## Game Features
 
+### Progress Tracking
+- **Top Progress Bar**: Shows all levels you've attempted
+  - Completed levels appear in green
+  - Current level appears in blue with a pulsing animation
+  - Retry count displayed next to each level number (if any retries)
+  - Hover over any level to see its parameters (wait time, display time, digits, animals, retries)
+  - Click on any completed level to jump back and replay it
+- Your progress is tracked throughout the session
+
 ### Core Mechanics
 - **Initial Display**: After 10 seconds, a random 4-digit number appears in the circle
 - **Brief Showing**: The number is displayed for only 1 second
 - **User Input**: Enter the number you remember
 - **Feedback**:
   - Correct: Celebration animation with clapping sound
-  - Wrong: Error message showing the correct number
+  - Wrong: Error message showing the correct number and increments retry counter
 
 ### Difficulty Progression
 
@@ -56,7 +65,10 @@ Starting from **Level 3**, animated animals appear to distract you:
 
 - Pure HTML, CSS, and JavaScript (no external dependencies)
 - Calming gradient background with SVG overlay
-- Interactive level tooltip showing real-time game parameters
+- Fixed top progress bar with interactive level navigation
+- Interactive level tooltips showing real-time game parameters
+- Session-based progress tracking with retry counting
+- Level replay functionality - jump back to any completed level
 - Responsive design
 - Web Audio API for sound effects (works without external audio files)
 - Dynamic JavaScript-based animations for random animal movements
@@ -79,11 +91,14 @@ Works on all modern browsers that support:
 
 ## Tips for Playing
 
-1. Hover over the level number to see current difficulty parameters
-2. Focus on the center of the circle before the number appears
-3. Try to visualize the number in chunks (e.g., 12-34 instead of 1-2-3-4)
-4. Don't let the animals distract you from level 3 onwards!
-5. As levels increase, animals get faster and more numerous - stay focused!
-6. Practice regularly to improve your memory skills
+1. Check the progress bar at the top to track your completed levels
+2. Click on any level in the progress bar to replay it and improve your retry count
+3. Hover over levels in the progress bar to review their difficulty settings
+4. Hover over the current level number to see real-time difficulty parameters
+5. Focus on the center of the circle before the number appears
+6. Try to visualize the number in chunks (e.g., 12-34 instead of 1-2-3-4)
+7. Don't let the animals distract you from level 3 onwards!
+8. As levels increase, animals get faster and more numerous - stay focused!
+9. Practice regularly to improve your memory skills
 
 Enjoy the game and challenge yourself to reach higher levels!
