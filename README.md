@@ -5,11 +5,12 @@ A web-based memory game designed to test and improve your concentration and shor
 ## How to Play
 
 1. Open `index.html` in your web browser
-2. A black circle will appear on a white background
-3. Wait for a random number to appear inside the circle
-4. Remember the number - it will only be shown for a brief moment!
-5. Enter the number in the popup that appears
-6. Progress through increasingly difficult levels
+2. A black circle will appear on a calm, gradient background
+3. Hover over the level number to see current game parameters
+4. Wait for a random number to appear inside the circle
+5. Remember the number - it will only be shown for a brief moment!
+6. Enter the number in the popup that appears
+7. Progress through increasingly difficult levels
 
 ## Game Features
 
@@ -26,6 +27,14 @@ A web-based memory game designed to test and improve your concentration and shor
 #### Every Level:
 - Wait time increases by 10%
 - Display time decreases by 10% (minimum 100ms)
+- Animal animations speed up by 5%
+
+#### Every 3 Levels:
+- 3 more animals are added to distract you
+  - Level 3-5: 3 animals
+  - Level 6-8: 6 animals
+  - Level 9-11: 9 animals
+  - And so on...
 
 #### Every 5 Levels:
 - One additional digit is added to the number
@@ -36,19 +45,24 @@ A web-based memory game designed to test and improve your concentration and shor
 
 ### Distractions
 
-Starting from **Level 3**, animated monkeys appear to distract you:
-- Running around the circle
-- Jumping around
-- Making faces
-- Each with different animation patterns
+Starting from **Level 3**, animated animals appear to distract you:
+- 20 different types of animals (monkeys, dogs, cats, foxes, bears, and more!)
+- Random movements across the screen
+- Random rotations and scaling effects
+- Animals move faster with each level
+- More animals added every 3 levels for increased challenge
 
 ## Technical Features
 
 - Pure HTML, CSS, and JavaScript (no external dependencies)
+- Calming gradient background with SVG overlay
+- Interactive level tooltip showing real-time game parameters
 - Responsive design
 - Web Audio API for sound effects (works without external audio files)
-- Smooth animations using CSS keyframes
+- Dynamic JavaScript-based animations for random animal movements
+- Interval-based animation system with speed progression
 - Modal popups for user interaction
+- Smooth transitions and visual effects
 
 ## Files
 
@@ -65,9 +79,11 @@ Works on all modern browsers that support:
 
 ## Tips for Playing
 
-1. Focus on the center of the circle before the number appears
-2. Try to visualize the number in chunks (e.g., 12-34 instead of 1-2-3-4)
-3. Don't let the monkeys distract you from level 3 onwards!
-4. Practice regularly to improve your memory skills
+1. Hover over the level number to see current difficulty parameters
+2. Focus on the center of the circle before the number appears
+3. Try to visualize the number in chunks (e.g., 12-34 instead of 1-2-3-4)
+4. Don't let the animals distract you from level 3 onwards!
+5. As levels increase, animals get faster and more numerous - stay focused!
+6. Practice regularly to improve your memory skills
 
 Enjoy the game and challenge yourself to reach higher levels!
