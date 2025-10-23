@@ -37,6 +37,66 @@
         </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content settings-modal">
+            <h2>Game Settings</h2>
+            <p class="settings-subtitle">Customize your game difficulty</p>
+
+            <div class="settings-form">
+                <div class="setting-item">
+                    <label for="wait-time-increase">
+                        Wait Time Increase Per Level (%)
+                        <span class="setting-help">How much longer you wait for the number each level</span>
+                    </label>
+                    <input type="number" id="wait-time-increase" min="0" max="100" step="1" value="10">
+                </div>
+
+                <div class="setting-item">
+                    <label for="display-time-decrease">
+                        Display Time Decrease Per Level (%)
+                        <span class="setting-help">How much shorter the number appears each level</span>
+                    </label>
+                    <input type="number" id="display-time-decrease" min="0" max="100" step="1" value="10">
+                </div>
+
+                <div class="setting-item">
+                    <label for="animal-speed-increase">
+                        Animal Speed Increase Per Level (%)
+                        <span class="setting-help">How much faster animals move each level</span>
+                    </label>
+                    <input type="number" id="animal-speed-increase" min="0" max="100" step="1" value="5">
+                </div>
+
+                <div class="setting-item">
+                    <label for="animal-start-level">
+                        Level to Start Adding Animals
+                        <span class="setting-help">Which level animals first appear</span>
+                    </label>
+                    <input type="number" id="animal-start-level" min="1" max="20" step="1" value="3">
+                </div>
+
+                <div class="setting-item">
+                    <label for="animals-per-interval">
+                        Animals Added Every X Levels
+                        <span class="setting-help">How often to add more animals (e.g., 3 = every 3 levels)</span>
+                    </label>
+                    <input type="number" id="animals-per-interval" min="1" max="10" step="1" value="3">
+                </div>
+
+                <div class="setting-item">
+                    <label for="animals-count-increment">
+                        Number of Animals to Add Each Time
+                        <span class="setting-help">How many animals to add each interval</span>
+                    </label>
+                    <input type="number" id="animals-count-increment" min="1" max="10" step="1" value="3">
+                </div>
+            </div>
+
+            <button id="start-game-btn" class="btn btn-success btn-large">Start Game</button>
+        </div>
+    </div>
+
     <!-- Modal for user input -->
     <div id="input-modal" class="modal hidden">
         <div class="modal-content">

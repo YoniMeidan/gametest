@@ -11,6 +11,16 @@ let animalIntervals = []; // Store intervals for random movements
 let levelHistory = {}; // Store level data: { levelNum: { retries, waitTime, displayTime, digits, animals } }
 let completedLevels = []; // Array of completed level numbers
 
+// Game settings (customizable)
+let gameSettings = {
+    waitTimeIncrease: 10, // Percentage increase per level
+    displayTimeDecrease: 10, // Percentage decrease per level
+    animalSpeedIncrease: 5, // Percentage increase per level
+    animalStartLevel: 3, // Level to start adding animals
+    animalsPerInterval: 3, // Add animals every X levels
+    animalsCountIncrement: 3 // Number of animals to add each time
+};
+
 // DOM elements
 const circle = document.getElementById('circle');
 const numberDisplay = document.getElementById('number-display');
@@ -19,10 +29,12 @@ const statusMessage = document.getElementById('status-message');
 const inputModal = document.getElementById('input-modal');
 const successModal = document.getElementById('success-modal');
 const failureModal = document.getElementById('failure-modal');
+const settingsModal = document.getElementById('settings-modal');
 const userInput = document.getElementById('user-input');
 const submitBtn = document.getElementById('submit-btn');
 const nextLevelBtn = document.getElementById('next-level-btn');
 const tryAgainBtn = document.getElementById('try-again-btn');
+const startGameBtn = document.getElementById('start-game-btn');
 const correctNumberDisplay = document.getElementById('correct-number');
 const clapSound = document.getElementById('clap-sound');
 const monkeyContainer = document.getElementById('monkey-container');
@@ -31,6 +43,31 @@ const tooltipDisplay = document.getElementById('tooltip-display');
 const tooltipDigits = document.getElementById('tooltip-digits');
 const tooltipAnimals = document.getElementById('tooltip-animals');
 const progressLevels = document.getElementById('progress-levels');
+
+// Settings inputs
+const waitTimeIncreaseInput = document.getElementById('wait-time-increase');
+const displayTimeDecreaseInput = document.getElementById('display-time-decrease');
+const animalSpeedIncreaseInput = document.getElementById('animal-speed-increase');
+const animalStartLevelInput = document.getElementById('animal-start-level');
+const animalsPerIntervalInput = document.getElementById('animals-per-interval');
+const animalsCountIncrementInput = document.getElementById('animals-count-increment');
+
+// Load settings from inputs
+function loadSettings() {
+    gameSettings.waitTimeIncrease = parseFloat(waitTimeIncreaseInput.value) || 10;
+    gameSettings.displayTimeDecrease = parseFloat(displayTimeDecreaseInput.value) || 10;
+    gameSettings.animalSpeedIncrease = parseFloat(animalSpeedIncreaseInput.value) || 5;
+    gameSettings.animalStartLevel = parseInt(animalStartLevelInput.value) || 3;
+    gameSettings.animalsPerInterval = parseInt(animalsPerIntervalInput.value) || 3;
+    gameSettings.animalsCountIncrement = parseInt(animalsCountIncrementInput.value) || 3;
+}
+
+// Start game from settings
+function startGameFromSettings() {
+    loadSettings();
+    settingsModal.classList.add('hidden');
+    initGame();
+}
 
 // Initialize game
 function initGame() {
@@ -126,10 +163,14 @@ function jumpToLevel(level) {
     // Calculate the game state for the target level
     currentLevel = level;
 
-    // Recalculate wait time, display time, and animation speed
-    waitTime = 10000 * Math.pow(1.1, level - 1);
-    displayTime = Math.max(100, 1000 * Math.pow(0.9, level - 1));
-    animationSpeed = Math.max(500, 3000 * Math.pow(0.95, level - 1));
+    // Recalculate wait time, display time, and animation speed using settings
+    const waitIncrease = 1 + (gameSettings.waitTimeIncrease / 100);
+    const displayDecrease = 1 - (gameSettings.displayTimeDecrease / 100);
+    const speedIncrease = 1 - (gameSettings.animalSpeedIncrease / 100);
+
+    waitTime = 10000 * Math.pow(waitIncrease, level - 1);
+    displayTime = Math.max(100, 1000 * Math.pow(displayDecrease, level - 1));
+    animationSpeed = Math.max(500, 3000 * Math.pow(speedIncrease, level - 1));
 
     // Update level history if this level doesn't exist
     initLevelHistory();
@@ -154,8 +195,8 @@ function startLevel() {
     // Show status message
     statusMessage.textContent = `Get ready... Number will appear in ${(waitTime / 1000).toFixed(1)} seconds`;
 
-    // Add animal animations from level 3 onwards
-    if (currentLevel >= 3) {
+    // Add animal animations from the configured start level onwards
+    if (currentLevel >= gameSettings.animalStartLevel) {
         addAnimalAnimations();
     } else {
         removeAnimalAnimations();
@@ -175,9 +216,14 @@ function getDigitsForLevel(level) {
 
 // Calculate number of animals based on level
 function getAnimalCount(level) {
-    // No animals before level 3, then add 3 animals every 3 levels
-    if (level < 3) return 0;
-    return 3 * (Math.floor((level - 3) / 3) + 1);
+    // No animals before the start level
+    if (level < gameSettings.animalStartLevel) return 0;
+
+    // Calculate how many intervals have passed since animals started
+    const levelsSinceStart = level - gameSettings.animalStartLevel;
+    const intervals = Math.floor(levelsSinceStart / gameSettings.animalsPerInterval) + 1;
+
+    return gameSettings.animalsCountIncrement * intervals;
 }
 
 // Generate random number with specified digits
@@ -324,14 +370,17 @@ function showFailureModal() {
 function nextLevel() {
     currentLevel++;
 
-    // Increase wait time by 10%
-    waitTime *= 1.1;
+    // Apply custom wait time increase
+    const waitIncrease = 1 + (gameSettings.waitTimeIncrease / 100);
+    waitTime *= waitIncrease;
 
-    // Decrease display time by 10%, but not less than 100ms
-    displayTime = Math.max(100, displayTime * 0.9);
+    // Apply custom display time decrease
+    const displayDecrease = 1 - (gameSettings.displayTimeDecrease / 100);
+    displayTime = Math.max(100, displayTime * displayDecrease);
 
-    // Decrease animation speed by 5% (faster)
-    animationSpeed = Math.max(500, animationSpeed * 0.95);
+    // Apply custom animation speed increase (faster = lower duration)
+    const speedIncrease = 1 - (gameSettings.animalSpeedIncrease / 100);
+    animationSpeed = Math.max(500, animationSpeed * speedIncrease);
 
     // Initialize level history for new level
     initLevelHistory();
@@ -417,7 +466,9 @@ nextLevelBtn.addEventListener('click', nextLevel);
 
 tryAgainBtn.addEventListener('click', retryLevel);
 
-// Start the game when page loads
+startGameBtn.addEventListener('click', startGameFromSettings);
+
+// Show settings modal when page loads
 window.addEventListener('load', () => {
-    initGame();
+    settingsModal.classList.remove('hidden');
 });
