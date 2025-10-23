@@ -141,7 +141,7 @@ function updateProgressBar() {
         tooltip.className = 'progress-level-tooltip';
         tooltip.innerHTML = `
             <div>Level: ${level}</div>
-            <div>Wait Time: ${(levelData.waitTime / 1000).toFixed(1)}s</div>
+            <div>Max Wait Time: ${(levelData.waitTime / 1000).toFixed(1)}s</div>
             <div>Display Time: ${(levelData.displayTime / 1000).toFixed(2)}s</div>
             <div>Digits: ${levelData.digits}</div>
             <div>Animals: ${levelData.animals}</div>
@@ -192,8 +192,13 @@ function startLevel() {
     // Calculate number of digits based on level
     const digits = getDigitsForLevel(currentLevel);
 
+    // Calculate random wait time within the maximum wait time
+    // Minimum of 2 seconds, maximum of the current waitTime setting
+    const minWaitTime = Math.min(2000, waitTime);
+    const actualWaitTime = minWaitTime + Math.random() * (waitTime - minWaitTime);
+
     // Show status message
-    statusMessage.textContent = `Get ready... Number will appear in ${(waitTime / 1000).toFixed(1)} seconds`;
+    statusMessage.textContent = `Get ready... Number will appear within ${(waitTime / 1000).toFixed(1)} seconds`;
 
     // Add animal animations from the configured start level onwards
     if (currentLevel >= gameSettings.animalStartLevel) {
@@ -202,10 +207,10 @@ function startLevel() {
         removeAnimalAnimations();
     }
 
-    // Wait before showing the number
+    // Wait random time before showing the number
     setTimeout(() => {
         showNumber(digits);
-    }, waitTime);
+    }, actualWaitTime);
 }
 
 // Calculate number of digits based on level

@@ -6,7 +6,7 @@ A web-based memory game designed to test and improve your concentration and shor
 
 1. Open `index.html` in your web browser
 2. Configure your game settings in the popup that appears:
-   - **Wait Time Increase Per Level** - How much longer you wait for the number each level (default: 10%)
+   - **Wait Time Increase Per Level** - Maximum wait time increases by this percentage each level (default: 10%)
    - **Display Time Decrease Per Level** - How much shorter the number appears each level (default: 10%)
    - **Animal Speed Increase Per Level** - How much faster animals move each level (default: 5%)
    - **Level to Start Adding Animals** - Which level animals first appear (default: 3)
@@ -15,7 +15,7 @@ A web-based memory game designed to test and improve your concentration and shor
 3. Click "Start Game" to begin
 4. A black circle will appear on a calm, gradient background
 5. Hover over the level number to see current game parameters
-6. Wait for a random number to appear inside the circle
+6. The number will appear at a random time (between 2 seconds and the maximum wait time for that level)
 7. Remember the number - it will only be shown for a brief moment!
 8. Enter the number in the popup that appears
 9. Progress through increasingly difficult levels
@@ -43,8 +43,8 @@ A web-based memory game designed to test and improve your concentration and shor
 - Your progress is tracked throughout the session
 
 ### Core Mechanics
-- **Initial Display**: After 10 seconds, a random 4-digit number appears in the circle
-- **Brief Showing**: The number is displayed for only 1 second
+- **Random Timing**: The number appears at a random time within the maximum wait time (starts at 2-10 seconds)
+- **Brief Showing**: The number is displayed for only 1 second (configurable)
 - **User Input**: Enter the number you remember
 - **Feedback**:
   - Correct: Celebration animation with clapping sound

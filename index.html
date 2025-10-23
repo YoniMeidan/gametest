@@ -19,7 +19,7 @@
         <div class="level-info">
             <h2>Level: <span id="level-display">1
                 <div class="level-tooltip" id="level-tooltip">
-                    <div>Wait Time: <span id="tooltip-wait">10.0s</span></div>
+                    <div>Max Wait Time: <span id="tooltip-wait">10.0s</span></div>
                     <div>Display Time: <span id="tooltip-display">1.0s</span></div>
                     <div>Number Length: <span id="tooltip-digits">4</span> digits</div>
                     <div>Animals: <span id="tooltip-animals">0</span></div>
@@ -46,8 +46,8 @@
             <div class="settings-form">
                 <div class="setting-item">
                     <label for="wait-time-increase">
-                        Wait Time Increase Per Level (%)
-                        <span class="setting-help">How much longer you wait for the number each level</span>
+                        Maximum Wait Time Increase Per Level (%)
+                        <span class="setting-help">Number appears randomly within this maximum time (starts at 10 seconds)</span>
                     </label>
                     <input type="number" id="wait-time-increase" min="0" max="100" step="1" value="10">
                 </div>
